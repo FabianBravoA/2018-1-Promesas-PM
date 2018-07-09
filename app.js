@@ -6,7 +6,10 @@ function animateElement(element, start, end, duration){
         const loop = setInterval(()=>{ //función itineraria
             const currentPosition = start + delta * counter++;
             element.style.left = currentPosition;
-            if(currentPosition >= end){
+            if(start < end && currentPosition >= end){
+                clearInterval(loop);
+                resolve(); //Llama a then cuando termina la animación
+            }else if(start > end && currentPosition <= end){
                 clearInterval(loop);
                 resolve(); //Llama a then cuando termina la animación
             }
@@ -17,7 +20,7 @@ function animateElement(element, start, end, duration){
 // Somos las programadoras de la promise
 //====================== Promise =====================
 // Somos las programadoras usuarias de la promise
-
+/*
 const allImg = document.getElementsByTagName("img");
 console.log("Comienza promesa");
 animateElement(allImg[0], -200, 500, 3000).then(()=>{ //Dentro de este then, pongo otra promesa
@@ -31,4 +34,22 @@ animateElement(allImg[0], -200, 500, 3000).then(()=>{ //Dentro de este then, pon
 }).catch(()=>{
 
 });
-console.log("Holi soy código después de la promesa"); //Esta se ejecuta de manera asíncrona, por lo que aparece antes que termine la animación
+console.log("Holi soy código después de la promesa"); //Esta se ejecuta de manera asíncrona, por lo que aparece antes que termine la animación*/
+
+
+//PARALELISMO
+Promise.all([ //Las imágenes se mueven de izquierda a derecha
+    animateElement(allImg[0], -200, 600, 3000),
+    animateElement(allImg[1], -200, 600, 6000)
+]).then(()=>{
+    console.log("Terminaron AMBAS animaciones");
+    return Promise.all([ //Retornar promesa que se ejecutará en el próximo then
+        //Las imágenes se mueven de derecha a izquierda
+        animateElement(allImg[0], 600, -200, 3000),
+        animateElement(allImg[1], 600, -200, 6000)
+    ]);
+}).then(()=>{
+    console.log("Doge y cate se devolvieron");
+}).catch(()=>{
+
+});
