@@ -25,4 +25,4 @@ animateElement(allImg[0], -200, 500, 3000).then(()=>{
 }).catch(()=>{
 
 });
-console.log("Holi soy código después de la promesa");
+console.log("Holi soy código después de la promesa"); 
