@@ -20,9 +20,15 @@ function animateElement(element, start, end, duration){
 
 const allImg = document.getElementsByTagName("img");
 console.log("Comienza promesa");
-animateElement(allImg[0], -200, 500, 3000).then(()=>{
+animateElement(allImg[0], -200, 500, 3000).then(()=>{ //Dentro de este then, pongo otra promesa
     console.log("Terminó la animación de doge");
+    return animateElement(allImg[1], -200, 500, 6000);  //Esta es la otra promesa, que tiene su then propio
+}).then(()=>{
+    console.log("Terminó la animación de cate");
+    return animateElement(allImg[0], -200, 500, 3000);//Aqu´íí apilo otra promesa con su propio then
+}).then(()=>{
+    console.log("Terminó la segunda animación del doge");
 }).catch(()=>{
 
 });
-console.log("Holi soy código después de la promesa"); 
+console.log("Holi soy código después de la promesa"); //Esta se ejecuta de manera asíncrona, por lo que aparece antes que termine la animación
